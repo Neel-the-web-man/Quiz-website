@@ -52,6 +52,7 @@ main{
     align-items: center;
     gap: 30px;
     flex-direction: column;
+    margin-bottom: 10px;
 }
 .question-cont{
     border: 1px solid black;
@@ -61,7 +62,7 @@ main{
     position: relative;
 }
 .ques-sec{
-    height: 70px;
+    min-height: 70px;
     display: flex;
     width: 100%;
     justify-content: space-evenly;
@@ -74,6 +75,9 @@ main{
     width: 100%;
     border-bottom: 1px solid black;
     border-right: 1px solid black;
+}
+.time{
+    color: red;
 }
 .timer{
     border-bottom: 1px solid black;
@@ -155,3 +159,29 @@ main{
 .d-n{
     display: none;
 }
+@media only screen and (max-width: 750px) {
+    .nextQuesBtn{
+        left: 0px;
+        bottom:-33px;
+        width: 150px;
+    }
+  }
+@media only screen and (max-width: 565px) {
+    .question-cont{
+        width: 90%;
+    }
+  }
+@media only screen and (max-width: 440px) {
+    .question-cont{
+        width: 100%;
+    }
+    main{
+        padding: 30px 10px;
+    }
+    .timer{
+        font-size: 18px;
+    }
+    .score-cont{
+        font-size: 18px;
+    }
+  }
