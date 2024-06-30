@@ -288,11 +288,12 @@ function setTimer(index) {
         if (timeLeft == 0 && k != 15) {
             createNextBtn(index)
             clearInterval(interval);
-        } else if(k==15){
-            clearInterval(interval);
+        }else if (timeLeft == 0 && k == 15) {
             let replay = document.querySelector(".replay");
             replay.classList.remove("d-n");
+            clearInterval(interval);
         }
+
         if (timeLeft == 0) {
             let nodelist = document.querySelectorAll(`.opclass${k - 1}`);
             for (let i = 0; i < 4; i++) {
