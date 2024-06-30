@@ -231,93 +231,127 @@ let quesDataArr = [{
     answer: "A) Franz Schubert"
 }]
 let indexArr = [];
-let index = Math.floor(Math.random() * 29);
-indexArr.push(index);
-let flag;
-for (; ;) {
+let quesArr = [];
+let timeLeft;
+let interval;
+let k = 0, points = 0;
+function restart() {
+    indexArr=[];
+    quesArr=[];
+    k=0;points=0;
+    console.log("Ho");
+    document.querySelector(".questions").innerHTML="";
+    document.querySelector(".questions").classList.add("d-n");
+    let strbtn=document.querySelector(".start-btn");
+    strbtn.classList.remove("d-n");
+    let replay=document.querySelector(".replay");
+    replay.classList.add("d-n");
     let index = Math.floor(Math.random() * 29);
-    flag = 0;
-    for (let j = 0; j < indexArr.length; j++) {
-        if (indexArr[j] == index) {
-            flag = 1;
+    indexArr.push(index);
+    let flag;
+    for (; ;) {
+        let index = Math.floor(Math.random() * 29);
+        flag = 0;
+        for (let j = 0; j < indexArr.length; j++) {
+            if (indexArr[j] == index) {
+                flag = 1;
+                break;
+            }
+        }
+        if (!flag) {
+            indexArr.push(index);
+        } else {
+            flag = 0;
+        }
+        if (indexArr.length == 15) {
             break;
         }
     }
-    if (!flag) {
-        indexArr.push(index);
-    } else {
-        flag = 0;
-    }
-    if (indexArr.length == 15) {
-        break;
+    for (let i = 0; i < 15; i++) {
+        quesArr[i] = quesDataArr[indexArr[i]];
     }
 }
-let quesArr = [];
-for (let i = 0; i < 15; i++) {
-    quesArr[i] = quesDataArr[indexArr[i]];
-}
-console.log(indexArr);
-let interval;
-let k = 0, points = 0;
-function createNextBtn(index){
-    let quesCont=document.querySelectorAll(".question-cont");
+restart();
+function createNextBtn(index) {
+    let quesCont = document.querySelectorAll(".question-cont");
     let div = document.createElement("div");
     quesCont[index].append(div);
-    div.innerHTML=`<button onclick="nextQues()" class="nextQuesBtn">↓Next Question↓ </button>`
+    div.innerHTML = `<button onclick="nextQues()" class="nextQuesBtn">↓Next Question↓ </button>`
 }
-function setTimer(index){
-    let timeLeft=5;
-    let nodelist=document.querySelectorAll(".time")
-    let timeSpan=nodelist[index];
-    timeSpan.innerHTML=timeLeft;
-    interval=setInterval(()=>{
-        timeSpan.innerHTML=--timeLeft;
-        if(timeLeft==0){
+function setTimer(index) {
+    timeLeft = 15;
+    let nodelist = document.querySelectorAll(".time")
+    let timeSpan = nodelist[index];
+    timeSpan.innerHTML = timeLeft;
+    interval = setInterval(() => {
+        timeSpan.innerHTML = --timeLeft;
+        if (timeLeft == 0 && k != 15) {
             createNextBtn(index)
             clearInterval(interval);
+        } else if(k==15){
+            clearInterval(interval);
+            let replay = document.querySelector(".replay");
+            replay.classList.remove("d-n");
         }
-    },1000)
-}
-function nextQues(){
-    let nodelist=document.querySelectorAll(".nextQuesBtn");
-    nodelist[k-1].classList.add("d-n");
-    quiz();
-    window.scrollBy(0,580);
-}
-function checkOption(e){
-    if(e.innerHTML==quesArr[k-1].answer){
-        e.classList.add("corr-ans");
-        points+=20;
-        let scorelist=document.querySelectorAll('.score');
-        for(let i=0;i<scorelist.length;i++){
-            scorelist[i].innerHTML=`${points}/300&nbsp;`;
-        }
-    }else{
-        e.classList.add("wrong-ans");
-        let nodelist=document.querySelectorAll(`.opclass${k-1}`);
-        console.log(nodelist);
-        for(let i=0;i<4;i++){
-            if(quesArr[k-1].answer==nodelist[i].innerHTML){
-                nodelist[i].classList.add("corr-ans");
+        if (timeLeft == 0) {
+            let nodelist = document.querySelectorAll(`.opclass${k - 1}`);
+            for (let i = 0; i < 4; i++) {
+                if (quesArr[k - 1].answer == nodelist[i].innerHTML) {
+                    nodelist[i].classList.add("corr-ans");
+                }
             }
         }
-    }
-    createNextBtn(k-1);
-    clearInterval(interval);
+    }, 1000)
 }
-function quiz(){
+function nextQues() {
+    let nodelist = document.querySelectorAll(".nextQuesBtn");
+    nodelist[k - 1].classList.add("d-n");
+    if (k < 15) {
+        quiz();
+        window.scrollBy(0, 580);
+    }
+}
+function checkOption(e) {
+    let nodelist;
+    nodelist = document.querySelectorAll(`.opclass${k - 1}`);
+    if (timeLeft != 0) {
+        if (e.innerHTML == quesArr[k - 1].answer) {
+            e.classList.add("corr-ans");
+                points += 20;
+                let scorelist = document.querySelectorAll('.score');
+                for (let i = 0; i < scorelist.length; i++) {
+                    scorelist[i].innerHTML = `${points}/300&nbsp;`;
+                }
+        } else {
+            e.classList.add("wrong-ans");
+            for (let i = 0; i < 4; i++) {
+                if (quesArr[k - 1].answer == nodelist[i].innerHTML) {
+                    nodelist[i].classList.add("corr-ans");
+                }
+            }
+        }
+        for (let i = 0; i < 4; i++) {
+            nodelist[i].disabled=true;
+        }
+        if(k!=15){
+            createNextBtn(k - 1);
+        }else{
+            let replay = document.querySelector(".replay");
+            replay.classList.remove("d-n");
+        }
+        clearInterval(interval);
+    }
+}
+function quiz() {
     let questionsDiv = document.querySelector(".questions");
     let div = document.createElement("div");
     div.classList.add("question-cont");
     questionsDiv.append(div);
-    console.log(indexArr[k]);
-    console.log(quesArr[k]);
-    console.log(quesArr[k].ques);
     div.innerHTML = `
     <div class="ques-sec">
                     <div class="ques-num-cont">
                         <div class="ques-num"></div>
-                        <div>${k+1} OF 15</div>
+                        <div>${k + 1} OF 15</div>
                     </div>
                     <div class="timer">
                         <div>Time's Up in:</div>

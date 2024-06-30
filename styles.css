@@ -20,7 +20,7 @@ main{
     box-sizing: border-box;
     min-height: 500px;
 }
-.start-btn{
+.start-btn,.replay{
     font-weight: 600;
     padding: 10px 25px;
     font-size: 18px;
@@ -31,10 +31,19 @@ main{
     background-color: white;
     color: rgb(106, 186, 255);
 }
-.start-btn:hover{
+.start-btn:hover,.replay:hover{
     /* box-shadow:250px 0 0 0 rgb(0, 115, 255) inset; */
     box-shadow: inset 0 0 0 2em  rgb(106, 186, 255);
     color: white;
+}
+.replay-div{
+    display: flex;
+    justify-content: center;
+}
+.replay{
+    width: 180px;
+    padding: 8px 25px;
+    margin-bottom: 30px;
 }
 .questions{
     width: 100%;
